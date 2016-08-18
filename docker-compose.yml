@@ -10,6 +10,8 @@ services:
       - neo4j
   nginx:
     build: ./nginx
+    ports:
+      "80:80"
     links:
       - api
     depends_on:
