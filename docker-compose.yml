@@ -1,0 +1,16 @@
+version: '2'
+services:
+  neo4j:
+    image: neo4j
+  api:
+    build: ./api
+    links:
+      - neo4j
+    depends_on:
+      - neo4j
+  nginx:
+    build: ./nginx
+    links:
+      - api
+    depends_on:
+      - api
