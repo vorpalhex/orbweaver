@@ -9,5 +9,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "jshintConfig": {
+    "esversion": 6
+  },
+  "dependencies": {
+    "async": "^2.0.1",
+    "express": "^4.14.0",
+    "lodash": "^4.15.0",
+    "neo4j": "^2.0.0-RC2"
+  }
 }

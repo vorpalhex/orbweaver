@@ -2,6 +2,8 @@ version: '2'
 services:
   neo4j:
     image: neo4j
+    environment:
+      - NEO4J_AUTH=none
   api:
     build: ./api
     links:
