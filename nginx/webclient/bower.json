@@ -1,0 +1,23 @@
+{
+  "name": "orbweaver-webclient",
+  "authors": [
+    "Derrick <dhinkle09@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "ISC",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "d3": "^4.2.2"
+  }
+}

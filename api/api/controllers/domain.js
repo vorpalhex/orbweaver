@@ -24,7 +24,7 @@ module.exports = {
     let query = `MATCH (d:Domain{name:'{name}'})
     RETURN d`;
 
-    console.log(query, req.swagger.params.domain_name.value);
+    //console.log(query, req.swagger.params.domain_name.value);
 
     db.cypher({
       query: query,
