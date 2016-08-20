@@ -7,11 +7,14 @@ const NUM_RECORDS = 3000;
 
 //check to see if our record count
 db.cypher({
-  query: `MATCH (d:Domain)-[:IP]-(ip) WITH d,count(ip) as ipCount RETURN ipCount`
+  query: `MATCH (d:Domain)-[h:IP]-(ip) WITH count(ip) as ipCount RETURN ipCount`
 }, function(err, results){
   if(results.length < 1 || results[0] < NUM_RECORDS){
     //insert records
+    console.log('Inserting Records');
     insertRecords();
+  }else{
+    console.log('Already have records, not inserting...');
   }
 });
 

@@ -1,15 +1,15 @@
 version: '2'
 services:
-  neo4j:
-    image: neo4j
-    environment:
-      - NEO4J_AUTH=none
   api:
     build: ./api
     links:
       - neo4j
     depends_on:
       - neo4j
+  neo4j:
+    image: neo4j
+    environment:
+      - NEO4J_AUTH=none
   nginx:
     build: ./nginx
     ports:
@@ -18,3 +18,9 @@ services:
       - api
     depends_on:
       - api
+  worker:
+    build: ./worker
+    links:
+      - neo4j
+    depends_on:
+      - neo4j
