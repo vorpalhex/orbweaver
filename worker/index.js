@@ -9,17 +9,21 @@ function addRelationship(cb){
     WITH d,ip
     LIMIT 100
     WHERE rand() < 0.3
-    CREATE (d)-[:HAS]->(ip)`,
+    CREATE (d)-[:HAS]->(ip)
+    RETURN d,ip`,
+    lean: true
   }, cb);
 }
 
 function removeRelationship(cb){
   db.cypher({
     query: `MATCH (d:Domain)-[r:HAS]-(ip:IP)
-    WITH d,ip
+    WITH d,r,ip
     LIMIT 100
     WHERE rand() < 0.3
-    DELETE r`,
+    DELETE r
+    RETURN d,ip`,
+    lean: true
   }, cb);
 }
 
@@ -33,8 +37,9 @@ function doSomethingRandom(){
   }
 }
 
-function genericCB(err, result){
+function genericCB(err, changes){
   if(err) console.log('ERR', err);
+  console.log(result);
 }
 
 setInterval(doSomethingRandom, WORK_INTERVAL);
