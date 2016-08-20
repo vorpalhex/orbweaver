@@ -14,6 +14,7 @@ services:
     build: ./nginx
     ports:
       - "80:80"
+      - "3000:3000"
     links:
       - api
     depends_on:
