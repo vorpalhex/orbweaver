@@ -3,7 +3,7 @@ const async = require('async');
 const neo4j = require('neo4j');
 let db = new neo4j.GraphDatabase('http://localhost:7474');
 
-const NUM_RECORDS = 100000;
+const NUM_RECORDS = 3000;
 
 //check to see if our record count
 db.cypher({
@@ -18,8 +18,8 @@ db.cypher({
 function insertDomains(cb){
   db.cypher({
     query: `WITH ["questionablexboxrepair.com", "totallylegit.co.nz", "notavirus.co.uk", "mrrobot.ninja", "freeviagra.net"] as domains
-    FOREACH (r in range(0,999) |
-    CREATE(:Domain {id:r, name:r+"."+domains[r % size(domains)]}))`
+    FOREACH (r in range(0,${Math.floor(NUM_RECORDS/3)}) |
+    CREATE(:Domain {id:r+"."+domains[r % size(domains)]}))`
   }, cb);
 
 }
@@ -28,7 +28,7 @@ function insertIPs(domains, cb){
   db.cypher({
     query: `WITH ["123.456.789", "987.567.123", "908.123.654", "098.123.321", "098.432.123"] as ips
     FOREACH (r in range(0,999) |
-    CREATE(:IP {id:r, address:ips[r % size(ips)]+"."+r}))`
+    CREATE(:IP {id:ips[r % size(ips)]+"."+r}))`
   }, cb);
 
 }
@@ -38,7 +38,7 @@ function buildRelationships(ips, cb){
     query: `MATCH (d:Domain),(ip:IP)
     WITH d,ip
     LIMIT ${NUM_RECORDS}
-    WHERE rand() < 0.1
+    WHERE rand() < 0.3
     CREATE (d)-[:HAS]->(ip)`,
   }, cb);
 

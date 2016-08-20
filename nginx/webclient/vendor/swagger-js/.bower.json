@@ -39,6 +39,5 @@
   },
   "_source": "https://github.com/swagger-api/swagger-js.git",
   "_target": "^2.1.18",
-  "_originalSource": "swagger-js",
-  "_direct": true
+  "_originalSource": "swagger-js"
 }

@@ -14,17 +14,14 @@
     <h1 class="title">Orb Weaver</h1>
 
     <div class="row">
-      <div class="col-md-4">
-        <form id="searchForm" action="">
+      <div class="col-md-12">
+        <form id="searchForm" action="" autocomplete="off">
           <div class="form-group form-inline">
-            <input type="text" id="search" class="form-control pull-left" id="search" disabled="true" placeholder="Search">
-            <submit class="btn btn-default pull-left">Search</submit>
-            <ul class="dropdown-menu" aria-labelledby="searchSuggest" id="searchSuggest">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li role="separator" class="divider"></li>
-              <li><a href="#">Separated link</a></li>
+            <input type="text" id="search" class="form-control pull-left col-md-8" autocomplete="off" id="search" data-toggle="dropdown" aria-haspopup="true" disabled="true" placeholder="Search">
+            <input type="number" id="depth" class="form-control pull-left" required value="2">
+            <button type="submit" class="btn btn-default">Submit</button>
+            <ul class="dropdown-menu" aria-labelledby="search" id="searchSuggest">
+              <li>Query results will appear here</li>
             </ul>
           </div>
         </form>
@@ -35,7 +32,9 @@
       <div class="col-md-12">
         <hr>
         <!-- Begin D3 -->
-        <svg class="responsive" id="d3" width="960" height="720">
+        <div class="panel">
+          <svg class="responsive" id="d3" width="640" height="640">
+        </div>
       </div>
     </div>
     </div>
@@ -43,6 +42,7 @@
   <script src="vendor/jquery/dist/jquery.min.js"></script>
   <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="vendor/d3/d3.min.js"></script>
+  <script src="https://d3js.org/d3-force.v1.min.js"></script>
   <script src="vendor/swagger-js/browser/swagger-client.min.js"></script>
 
   <script src="js/forceDirectedGraph.js"></script>

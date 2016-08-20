@@ -89,52 +89,6 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /ips:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: ip
-    get:
-      description: Returns a list of all domains to the requester
-      # used as the method name of the controller
-      operationId: listIPs
-      parameters:
-        - $ref: "#/parameters/skipParam"
-        - $ref: "#/parameters/limitParam"
-        - $ref: "#/parameters/filterParam"
-      responses:
-        "200":
-          description: Success
-          schema:
-            # a pointer to a definition
-            $ref: "#/definitions/IPListResponse"
-        # responses may fall through to errors
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /ips/{ip_name}:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: ip
-    get:
-      description: Returns a list of all domains to the requester
-      # used as the method name of the controller
-      operationId: retrieveIP
-      parameters:
-        - name: ip_name
-          in: path
-          type: string
-          required: true
-        - $ref: "#/parameters/depthParam"
-      responses:
-        "200":
-          description: Success
-          schema:
-            # a pointer to a definition
-            $ref: "#/definitions/IPResponse"
-        # responses may fall through to errors
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
@@ -149,25 +103,17 @@ definitions:
           type: string
   DomainResponse:
     required:
-      - name
+      - nodes
+      - links
     properties:
-      name:
-        type: string
-  IPListResponse:
-    required:
-      - ips
-    properties:
-      ips:
+      nodes:
         type: array
         items:
-          type: string
-  IPResponse:
-    required:
-      - address
-    properties:
-      address:
-        type: string
-          
+          type: object
+      links:
+        type: array
+        items: 
+          type: object
   ErrorResponse:
     required:
       - message

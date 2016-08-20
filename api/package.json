@@ -9,6 +9,7 @@
   "main": "app.js",
   "dependencies": {
     "async": "^2.0.1",
+    "cors": "^2.7.1",
     "express": "^4.12.3",
     "lodash": "^4.15.0",
     "neo4j": "^2.0.0-RC2",
