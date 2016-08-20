@@ -23,5 +23,7 @@ services:
     build: ./worker
     links:
       - neo4j
+      - api
     depends_on:
       - neo4j
+      - api

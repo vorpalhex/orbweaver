@@ -3,6 +3,8 @@
 var SwaggerExpress = require('swagger-express-mw');
 var express = require('express');
 var app = express();
+var server = require('http').Server(app);
+var websocket = require('./websocket/server.js')(server);
 var cors = require('cors');
 module.exports = app; // for testing
 
@@ -20,6 +22,6 @@ SwaggerExpress.create(config, function(err, swaggerExpress) {
   swaggerExpress.register(app);
 
   var port = process.env.PORT || 3000;
-  app.listen(port);
+  server.listen(port);
 
 });

@@ -1,6 +1,29 @@
 var orbWeaver = {};
 window.orbWeaver = orbWeaver;
 
+var socket = io.connect('http://localhost:3000');
+socket.on('relationships_added', handleChanges);
+socket.on('relationships_removed', handleChanges);
+
+function handleChanges(changes){
+  console.log(changes);
+  var union = _.union([graph.nodes], _.flatten(changes));
+  if(union.length) updateGraph();
+}
+
+var domain_name = null;
+var depth = 2;
+var graphData = null;
+
+function updateGraph(){
+  window.apiClient.retrieveDomain({domain_name: domain_name, depth: depth})
+  .then(function(domain){
+    clearFDG();
+    graphData = domain.obj;
+    loadDataIntoForceDirectedGraph(domain.obj);
+  });
+}
+
 new SwaggerClient({
   url: 'http://localhost:3000/swagger',
   usePromise: true
@@ -29,13 +52,8 @@ $('#search').on('keyup', function(e){
 
 $('#searchForm').on('submit', function(e){
   e.preventDefault();
-  var depth = $('#depth').val() || 2;
-  window.apiClient.retrieveDomain({domain_name: $('#search').val(), depth: depth})
-  .then(function(domain){
-    clearFDG();
-    loadDataIntoForceDirectedGraph(domain.obj);
-    // d3.json('/miserables.json', function(err, graph){
-    //   loadDataIntoForceDirectedGraph(graph);
-    // });
-  });
+  depth = $('#depth').val() || 2;
+  domain_name = $('#search').val();
+
+  updateGraph();
 });

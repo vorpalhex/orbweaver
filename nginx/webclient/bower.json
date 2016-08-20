@@ -19,6 +19,7 @@
   "dependencies": {
     "bootstrap": "^3.3.7",
     "d3": "^4.2.2",
-    "swagger-js": "^2.1.18"
+    "swagger-js": "^2.1.18",
+    "lodash": "^4.15.0"
   }
 }
