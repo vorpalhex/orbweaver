@@ -12,9 +12,7 @@ var simulation = d3.forceSimulation()
     .force("charge", d3.forceManyBody())
     .force("center", d3.forceCenter(width / 2, height / 2));
 
-d3.json("miserables.json", function(error, graph) {
-  if (error) throw error;
-
+function loadDataIntoForceDirectedGraph(graph){
   var link = svg.append("g")
       .attr("class", "links")
     .selectAll("line")
@@ -23,7 +21,7 @@ d3.json("miserables.json", function(error, graph) {
       .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
 
   var node = svg.append("g")
-      .attr("class", "nodes")
+    .attr("class", "nodes")
     .selectAll("circle")
     .data(graph.nodes)
     .enter().append("circle")
@@ -37,24 +35,24 @@ d3.json("miserables.json", function(error, graph) {
   node.append("title")
       .text(function(d) { return d.id; });
 
-  simulation
-      .nodes(graph.nodes)
-      .on("tick", ticked);
+  simulation.nodes(graph.nodes).on("tick", ticked);
 
-  simulation.force("link")
-      .links(graph.links);
+  simulation.force("link").links(graph.links);
 
   function ticked() {
-    link
-        .attr("x1", function(d) { return d.source.x; })
+    link.attr("x1", function(d) { return d.source.x; })
         .attr("y1", function(d) { return d.source.y; })
         .attr("x2", function(d) { return d.target.x; })
         .attr("y2", function(d) { return d.target.y; });
 
-    node
-        .attr("cx", function(d) { return d.x; })
+    node.attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; });
   }
+}
+
+d3.json("miserables.json", function(error, graph) {
+  if (error) throw error;
+  loadDataIntoForceDirectedGraph(graph);
 });
 
 function dragstarted(d) {
