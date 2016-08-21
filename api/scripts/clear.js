@@ -3,7 +3,7 @@
  * This script is never automatically run
  */
 const neo4j = require('neo4j');
-let db = new neo4j.GraphDatabase('http://localhost:7474');
+let db = new neo4j.GraphDatabase('http://neo4j:7474');
 
 //check to see if our record count
 db.cypher({

@@ -15,14 +15,26 @@
 
     <div class="row">
       <div class="col-md-12">
-        <form id="searchForm" action="" autocomplete="off">
-          <div class="form-group form-inline">
-            <input type="text" id="search" class="form-control pull-left col-md-8" autocomplete="off" id="search" data-toggle="dropdown" aria-haspopup="true" disabled="true" placeholder="Search">
-            <input type="number" id="depth" class="form-control pull-left" required value="2">
-            <button type="submit" class="btn btn-default">Submit</button>
-            <ul class="dropdown-menu" aria-labelledby="search" id="searchSuggest">
-              <li>Query results will appear here</li>
-            </ul>
+        <form id="searchForm" action="" autocomplete="off" class="form-horizontal">
+          <div class="form-group">
+            <div class="col-sm-6">
+              <input type="text" id="search" class="form-control" autocomplete="off" id="search" data-toggle="dropdown" aria-haspopup="true" disabled="true" placeholder="Search">
+              <ul class="dropdown-menu" aria-labelledby="search" id="searchSuggest">
+                <li>Query results will appear here</li>
+              </ul>
+            </div>
+            <div class="col-sm-1">
+              <input type="number" id="depth" class="form-control" required value="2">
+            </div>
+            <div class="col-sm-3">
+              <button type="submit" class="btn btn-default">Submit</button>
+            </div>
+            <div class="col-md-2">
+              <a href="#" class="pull-left searchFavorite">20.questionablexboxrepair.com</a>
+              <a href="#" class="pull-left searchFavorite">1.totallylegit.co.nz</a>
+              <a href="#" class="pull-left searchFavorite">3.mrrobot.ninja</a>
+              <a href="#" class="pull-left searchFavorite">7.notavirus.co.uk</a>
+            </div>
           </div>
         </form>
       </div>

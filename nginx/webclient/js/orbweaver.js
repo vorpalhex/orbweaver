@@ -29,7 +29,7 @@ function updateGraph(){ //fetch an updated graph using our past params
 }
 
 new SwaggerClient({ //connect to our swagger
-  url: ':3000/swagger',
+  url: 'http://localhost:3000/swagger',
   usePromise: true
 }).then(function(client){
   $('#search').prop('disabled', false); //enable searches
@@ -48,7 +48,6 @@ $('#search').on('keyup', function(e){ //basic suggestion box
     //our suggestion is always a valid domain
     $('.searchResult').on('click', function(e){
       e.preventDefault();
-      console.log('Hello', this);
       $('#search').val($(this).html());
       $('#searchForm').submit();
     });
@@ -62,4 +61,10 @@ $('#searchForm').on('submit', function(e){
   domain_name = $('#search').val();
 
   updateGraph();
+});
+
+$('.searchFavorite').on('click', function(e){
+  e.preventDefault();
+  $('#search').val($(this).html());
+  $('#searchForm').submit();
 });

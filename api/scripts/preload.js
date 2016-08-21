@@ -5,22 +5,36 @@
 const _ = require('lodash');
 const async = require('async');
 const neo4j = require('neo4j');
-let db = new neo4j.GraphDatabase('http://localhost:7474');
+let db = new neo4j.GraphDatabase('http://neo4j:7474');
 
 const NUM_RECORDS = 3000;
 
-//check to see if our record count matches what we expect
-db.cypher({
-  query: `MATCH (d:Domain)-[h:IP]-(ip) WITH count(ip) as ipCount RETURN ipCount`
-}, function(err, results){
-  if(results.length < 1 || results[0] < NUM_RECORDS){
-    //insert records
-    console.log('Inserting Records');
-    insertRecords();
-  }else{
-    console.log('Already have records, not inserting...');
-  }
-});
+console.log('Preloading');
+return delayStart();
+
+function delayStart(err){
+  setTimeout(function(){
+    console.log('Database not ready, trying again...');
+    start(delayStart);
+  }, 5 * 1000);
+}
+
+function start(cb){
+  console.log('Attempting to add records');
+  //check to see if our record count matches what we expect
+  db.cypher({
+    query: `MATCH (d:Domain)-[h:IP]-(ip) WITH count(ip) as ipCount RETURN ipCount`
+  }, function(err, results){
+    if(err) return cb(err);
+    if(results.length < 1 || results[0].ipCount < NUM_RECORDS){
+      //insert records
+      console.log('Inserting Records');
+      insertRecords();
+    }else{
+      console.log('Already have records, not inserting...');
+    }
+  });
+}
 
 /*
  * Take a few base domains, semi-randomly generate subdomains of them
@@ -69,7 +83,7 @@ function insertRecords(){
       console.log(err);
       return process.exit(1);
     }
-    console.log(results);
+    console.log('Records Inserted!');
     return process.exit(0);
   });
 }

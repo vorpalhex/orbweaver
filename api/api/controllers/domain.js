@@ -13,7 +13,7 @@ module.exports = {
        * We should be using a parameter here instead of templating, but node-neo4j does *NOT* like regex params
        * like, not even a tiny bit.
        */
-      query+= `\nWHERE d.name =~.*${req.swagger.params.filter.value}.*\n`;
+      query+= `\nWHERE d.id =~'.*${req.swagger.params.filter.value}.*'\n`;
     }
     query+=`RETURN d`;
     query+=QueryBuilder(req); //supplies SKIP and LIMIT as need be, always has a LIMIT
@@ -65,7 +65,7 @@ module.exports = {
         return link.source && link.target;
       });
 
-      res.send(results); 
+      res.send(results);
     });
   }
 };

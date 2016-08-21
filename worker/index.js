@@ -1,6 +1,6 @@
 const neo4j = require('neo4j');
-let db = new neo4j.GraphDatabase('http://localhost:7474');
-let ws = require('socket.io-client')('http://localhost:3000'); //use socket to broadcast changes
+let db = new neo4j.GraphDatabase('http://neo4j:7474');
+let ws = require('socket.io-client')('http://api:3000'); //use socket to broadcast changes
 
 const WORK_INTERVAL = 5 * 1000; //how often we do work
 
