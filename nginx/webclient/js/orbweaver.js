@@ -1,38 +1,42 @@
-var orbWeaver = {};
-window.orbWeaver = orbWeaver;
+//Set up our socket server
+if(io){ //make sure we have socket.io loaded
+  var socket = io(':3000'); //connect to our host but on APIs port
 
-var socket = io.connect('http://localhost:3000');
-socket.on('relationships_added', handleChanges);
-socket.on('relationships_removed', handleChanges);
+  socket.on('relationships_added', handleChanges); //subscribe to adds
+  socket.on('relationships_removed', handleChanges); //subscribe to drops
+}else{
+  console.log('Failed to load Socket.io, API may be down'); //warn us if no connection
+}
 
-function handleChanges(changes){
-  console.log(changes);
-  var union = _.union([graph.nodes], _.flatten(changes));
-  if(union.length) updateGraph();
+function handleChanges(changes){ //we just need to see if our changes affect us
+  if(graphData){ //make sure we currently have a graph
+    var union = _.union([graphData.nodes], _.flatten(changes)); //check for overlap with displayed nodes
+    if(union.length) updateGraph(); //if so, then pull new data
+  }
 }
 
 var domain_name = null;
 var depth = 2;
 var graphData = null;
 
-function updateGraph(){
+function updateGraph(){ //fetch an updated graph using our past params
   window.apiClient.retrieveDomain({domain_name: domain_name, depth: depth})
   .then(function(domain){
-    clearFDG();
+    clearFDG(); //We should really do a partial update here, not a re-render
     graphData = domain.obj;
     loadDataIntoForceDirectedGraph(domain.obj);
   });
 }
 
-new SwaggerClient({
-  url: 'http://localhost:3000/swagger',
+new SwaggerClient({ //connect to our swagger
+  url: ':3000/swagger',
   usePromise: true
 }).then(function(client){
-  $('#search').prop('disabled', false);
-  window.apiClient = client.apis.default;
+  $('#search').prop('disabled', false); //enable searches
+  window.apiClient = client.apis.default; //save our client
 });
 
-$('#search').on('keyup', function(e){
+$('#search').on('keyup', function(e){ //basic suggestion box
   window.apiClient.listDomains({filter: $('#search').val(), limit: 10})
   .then(function(domains){
     domains = domains.obj;
@@ -41,6 +45,7 @@ $('#search').on('keyup', function(e){
       $('#searchSuggest').append('<li><a class="searchResult" href="#">'+domain+'</a></li>');
     });
 
+    //our suggestion is always a valid domain
     $('.searchResult').on('click', function(e){
       e.preventDefault();
       console.log('Hello', this);
@@ -50,6 +55,7 @@ $('#search').on('keyup', function(e){
   });
 });
 
+//save params and force an "update" (even if this is new data)
 $('#searchForm').on('submit', function(e){
   e.preventDefault();
   depth = $('#depth').val() || 2;

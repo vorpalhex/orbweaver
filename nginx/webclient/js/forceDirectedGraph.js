@@ -1,18 +1,22 @@
 //https://bl.ocks.org/mbostock/4062045
 
+//grab our stats and base element
 var svg = d3.select("svg"),
 width = +svg.attr("width"),
 height = +svg.attr("height");
 
+//get a nice default color scheme
 var color = d3.scaleOrdinal(d3.schemeCategory20);
 
+//create a new force simulation, let links be handled by their ID property
 var simulation = d3.forceSimulation()
 .force("link", d3.forceLink().id(function(d) { return d.id; }))
 .force("charge", d3.forceManyBody())
 .force("center", d3.forceCenter(width / 2, height / 2));
 
+//load new data into a graph
 function loadDataIntoForceDirectedGraph(graph){
-
+  //visual link element
   var link = svg.append("g")
   .attr("class", "links")
   .selectAll("line")
@@ -20,12 +24,13 @@ function loadDataIntoForceDirectedGraph(graph){
   .enter().append("line")
   .attr("stroke-width", 2);
 
+  //visual node element
   var node = svg.append("g")
   .attr("class", "nodes")
   .selectAll("circle")
   .data(graph.nodes)
   .enter()
-  .append("circle")
+  .append("circle") //it'd be nice if we wrapped these in g's so we could have text labels
   .attr("r", 10)
   .attr("fill", function(d) { return color(d.group); })
   .call(d3.drag()
@@ -33,16 +38,19 @@ function loadDataIntoForceDirectedGraph(graph){
   .on("drag", dragged)
   .on("end", dragended));
 
-
+  //settle for hover titles for now, use our id field
   node.append("title")
   .text(function(d) { return d.id; });
 
+  //on click, be ticked
   simulation
   .nodes(graph.nodes)
   .on("tick", ticked);
 
   simulation.force("link")
   .links(graph.links);
+
+  ticked();
 
   function ticked() {
     link
@@ -57,13 +65,13 @@ function loadDataIntoForceDirectedGraph(graph){
   }
 
 }
-
+//clear our graph
 function clearFDG(){
   svg.selectAll('.links').remove();
   svg.selectAll('.nodes').remove();
 }
 
-
+//let us drag around our nodes for fun
 function dragstarted(d) {
   if (!d3.event.active) simulation.alphaTarget(0.3).restart();
   d.fx = d.x;

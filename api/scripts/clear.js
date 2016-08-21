@@ -1,3 +1,7 @@
+/*
+ * Clear all entries from database
+ * This script is never automatically run
+ */
 const neo4j = require('neo4j');
 let db = new neo4j.GraphDatabase('http://localhost:7474');
 

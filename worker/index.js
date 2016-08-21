@@ -1,10 +1,10 @@
 const neo4j = require('neo4j');
 let db = new neo4j.GraphDatabase('http://localhost:7474');
-let ws = require('socket.io-client')('http://localhost:3000');
+let ws = require('socket.io-client')('http://localhost:3000'); //use socket to broadcast changes
 
-const WORK_INTERVAL = 5 * 1000;
+const WORK_INTERVAL = 5 * 1000; //how often we do work
 
-function addRelationship(){
+function addRelationship(){ //add 30 or so random relationships
   db.cypher({
     query: `MATCH (d:Domain),(ip:IP)
     WITH d,ip
@@ -19,7 +19,7 @@ function addRelationship(){
   });
 }
 
-function removeRelationship(){
+function removeRelationship(){ //drop 30 or so random relationships
   db.cypher({
     query: `MATCH (d:Domain)-[r:HAS]-(ip:IP)
     WITH d,r,ip
@@ -34,7 +34,7 @@ function removeRelationship(){
   });
 }
 
-function doSomethingRandom(){
+function doSomethingRandom(){ //50/50 chance of adding or dropping
   if (Math.random() > 0.5) {
     console.log('Adding Records...');
     addRelationship();
@@ -44,6 +44,6 @@ function doSomethingRandom(){
   }
 }
 
-ws.on('connect', function(socket){
+ws.on('connect', function(socket){ //don't start firing changes until we can broadcast them
   setInterval(doSomethingRandom, WORK_INTERVAL);
 });
